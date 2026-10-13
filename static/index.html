@@ -1,0 +1,51 @@
+
+# Neon Hand Telegram Mini App
+
+Loyiha Telegram bot + Mini App + neon effektli rasm qayta ishlashni o'z ichiga oladi.
+
+## Ishga tushirish
+
+Python 3.11 tavsiya etiladi. Terminalda loyiha papkasiga kiring:
+
+    pip install -r requirements.txt
+
+BOT_TOKEN va WEBAPP_URL muhit o'zgaruvchilarini sozlang.
+WEBAPP_URL ommaga ochiq HTTPS manzil bo'lishi kerak.
+
+Windows CMD:
+    set BOT_TOKEN=BOTFATHER_TOKEN
+    set WEBAPP_URL=https://SIZNING-HTTPS-MANZILINGIZ
+    python app.py
+
+PowerShell:
+    $env:BOT_TOKEN="BOTFATHER_TOKEN"
+    $env:WEBAPP_URL="https://SIZNING-HTTPS-MANZILINGIZ"
+    python app.py
+
+Linux/macOS:
+    export BOT_TOKEN="BOTFATHER_TOKEN"
+    export WEBAPP_URL="https://SIZNING-HTTPS-MANZILINGIZ"
+    python app.py
+
+## Hosting
+
+Mini App Telegram ichida ishlashi uchun public HTTPS hosting kerak.
+Masalan, Render kabi Python web service:
+
+- Build command: pip install -r requirements.txt
+- Start command: python app.py
+- Environment variables: BOT_TOKEN, WEBAPP_URL
+- WEBAPP_URL qiymati deployed servisning HTTPS URL manzili bo'lsin.
+
+Deploy tugagach, botga /start yuboring va Mini App tugmasini bosing.
+BotFather ichida menu button URL manzilini ham o'rnatish mumkin.
+
+## Funksiyalar
+
+- /start, /help, /app
+- Mini Appda rasm tanlash, neon effekt, natijani saqlash
+- Botga yuborilgan suratga ham neon effekt qo'shish
+
+Eslatma: jonli video emas, statik rasm ishlanadi.
+Tokenni hech kimga bermang. Hosting va bot token sozlamasisiz
+loyiha avtomatik internetga joylanmaydi.
