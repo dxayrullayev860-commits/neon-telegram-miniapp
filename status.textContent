@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neon Hand App</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px 16px;
+      background: #090914;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    h1 { color: #ff38d1; }
+    p { color: #c9c9dc; }
+    .card {
+      max-width: 420px;
+      margin: 24px auto;
+      padding: 20px;
+      border: 1px solid #6736a5;
+      border-radius: 18px;
+      background: #141426;
+    }
+    input, button {
+      width: 100%;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+    input { background: #222238; color: white; }
+    button {
+      border: 0;
+      background: #f52bc5;
+      color: white;
+      font-weight: bold;
+    }
+    button:disabled { opacity: 0.5; }
+    img {
+      max-width: 100%;
+      margin-top: 18px;
+      border-radius: 12px;
+    }
+    #status { overflow-wrap: anywhere; }
+  </style>
+</head>
+<body>
+  <h1>✨ Neon Hand</h1>
+  <p>Qo‘lingizga neon effekt qo‘shing!</p>  <div class="card">
+    <input id="photo" type="file" accept="image/*">
+    <button id="process">Neon effekt yaratish</button>
+    <p id="status">Rasm tanlang.</p>
+    <img id="result" hidden alt="Neon effekt natijasi">
+    <a id="download" hidden download="neon-result.jpg">
+      Natijani yuklab olish
+    </a>
+  </div>  <script src="https://telegram.org/js/telegram-web-app.js"></script>  <script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+
+    const photo = document.getElementById('photo');
+    const button = document.getElementById('process');
+    const status = document.getElementById('status');
+    const result = document.getElementById('result');
+    const download = document.getElementById('download');
+
+    button.addEventListener('click', async () => {
+      if (!photo.files.length) {
+        status.textContent = 'Avval rasm tanlang!';
+        return;
+      }
+
+      button.disabled = true;
+      status.textContent = 'Rasm qayta ishlanmoqda...';
+      result.hidden = true;
+      download.hidden = true;
+
+      try {
+        const form = new FormData();
+        form.append('file', photo.files[0]);
+
+        const headers = {};
+        if (tg.initData) {
+          headers['X-Telegram-Init-Data'] = tg.initData;
+        }
+
+        const response = await fetch('/api/process', {
+          method: 'POST',
+          headers,
+          body: form
+        });
+
+        if (!response.ok) {
+          throw new Error(await response.text());
+        }
+
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        result.src = url;
+        result.hidden = false;
+        download.href = url;
+        download.hidden = false;
+        download.style.display = 'block';
+        download.style.marginTop = '16px';
+        download.style.color = '#ff70df';
+        status.textContent = 'Tayyor! ✨';
+      } catch (error) {
+        status.textContent = 'Xatolik: ' + error.message;
+      } finally {
+        button.disabled = false;
+      }
+    });
+  </script></body>
+</html>
